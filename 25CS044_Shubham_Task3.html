@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Online Product Order</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #eeeeee;
+        }
+
+        #mainTitle {
+            /* Fix S1: Added missing colon between property and value */
+            text-align: center;
+            color: darkred;
+        }
+
+        /* Fix S2: Added '#' prefix for ID selector */
+        #orderBox {
+            width: 450px;
+            border: 2px solid black;
+            margin: 20px auto;
+            /* Fix S3: Added 'px' unit to padding value */
+            padding: 20px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .bill {
+            width: 450px;
+            border: 2px solid green;
+            margin: 20px auto;
+            padding: 15px;
+        }
+
+        #orderButton {
+            padding: 10px;
+            background: lightblue;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h1 id="mainTitle">Online Product Order</h1>
+
+<div id="orderBox">
+
+    <div class="field">
+
+        <label for="customer">Customer Name:</label>
+
+        <input type="text" id="customer">
+
+    </div>
+
+    <div class="field">
+
+        <label for="product">Select Product:</label>
+
+        <select id="product">
+
+            <option value="">Select Product</option>
+
+            <option value="Laptop">Laptop - Rs. 50000</option>
+
+            <option value="Mobile">Mobile - Rs. 20000</option>
+
+            <option value="Keyboard">Keyboard - Rs. 1500</option>
+
+        </select>
+
+    </div>
+
+    <div class="field">
+
+        <label for="quantity">Quantity:</label>
+
+        <!-- Fix M2: Changed type to 'number' and added min="1" to prevent zero/negative values -->
+        <input type="number" id="quantity" min="1">
+
+    </div>
+
+    <!-- Fix S4: Updated onclick to call calculateBill() matching the JS function name -->
+    <button id="orderButton"
+            onclick="calculateBill()">
+
+        Generate Bill
+
+    </button>
+
+</div>
+
+<div id="billBox" class="bill">
+
+    Bill will appear here.
+
+</div>
+
+<script>
+
+/* Fix D5: Restructured the billing flow in the required sequential order */
+function calculateBill() {
+
+    // --- Step 1: Read Input ---
+    // Fix S5: Corrected getElementByID to getElementById (case-sensitive)
+    var customer = document.getElementById("customer").value;
+    // Fix M1: Corrected "products" to "product" to match HTML select ID
+    var product = document.getElementById("product").value;
+    var quantity = document.getElementById("quantity").value;
+
+    // --- Step 2: Validate Customer (Fix M5) ---
+    if (customer.trim() === "") {
+        alert("Enter Customer Name");
+        return;
+    }
+
+    // --- Step 3: Validate Product (Fix M5) ---
+    if (product === "") {
+        alert("Select Product");
+        return;
+    }
+
+    // --- Step 4: Validate Quantity (Fix M5 & Fix D2) ---
+    // Rejects empty, non-numeric, zero, and negative values and halts execution
+    if (quantity === "" || isNaN(quantity) || Number(quantity) <= 0) {
+        alert("Enter a valid Quantity (greater than zero)");
+        return;
+    }
+
+    // --- Step 5: Determine Price ---
+    var price = 0;
+
+    if (product == "Laptop") {
+        price = 50000;
+    }
+
+    // Fix M3: Corrected Mobile price from 2000 to 20000
+    if (product == "Mobile") {
+        price = 20000;
+    }
+
+    if (product == "Keyboard") {
+        price = 1500;
+    }
+
+    // --- Step 6: Calculate Total (Fix D1) ---
+    // Used multiplication and coerced quantity to Number
+    var total = price * Number(quantity);
+
+    // --- Step 7: Ask Customer Type (Fix D3) ---
+    // Only accepts 'Regular' or 'Premium'; cancels/stops on empty or cancel
+    var customerType = prompt("Enter Customer Type: Regular or Premium");
+
+    if (customerType === null || customerType.trim() === "") {
+        alert("Customer Type cancelled or empty. Bill not generated.");
+        return;
+    }
+    
+    var ct = customerType.trim().toLowerCase();
+    if (ct !== "regular" && ct !== "premium") {
+        alert("Invalid Customer Type. Bill not generated.");
+        return;
+    }
+
+    // --- Step 8: Ask Confirmation (Fix D4) ---
+    // Asks to place order; OK generates bill, Cancel skips generation with alert
+    var order = confirm("Do you want to place this order?");
+
+    if (order === true) {
+
+        // --- Step 9: Generate Bill (Fix M4) ---
+        // Target container corrected from 'bill' to 'billBox'
+        document.getElementById("billBox").innerHTML =
+            "<h2>Order Bill</h2>" +
+            "Customer: " + customer +
+            "<br>Product: " + product +
+            "<br>Price: " + price +
+            "<br>Quantity: " + quantity +
+            "<br>Total Amount: " + total +
+            "<br>Customer Type: " + customerType;
+
+        // --- Step 10: Display Success Alert ---
+        alert("Order placed successfully");
+
+    } else {
+        alert("Order Cancelled");
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+====================================================================================================================================
+                                              INTERNAL PRACTICAL EXAM  --  BUG REPORT                                               
+                                        Task 3 : Product Order and Bill Generation Debugging                                        
+====================================================================================================================================
+
+Enrollment No. : 25CS044
+Student Name   : SHUBHAM ARUNBHAI MENDPARA
+Assigned Task  : Task 3 - Product Order
+Date           : 26/06/2026
+
+Instructions:
+For each correction, briefly state the original problem, the correction made,
+and the reason the correction was required.
+
+SUMMARY  ->  Simple: 5 bugs (10 marks)  |  Medium: 5 bugs (15 marks)  |  Difficult: 5 bugs (25 marks)  |  Total: 15 bugs, 50 marks
+
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| No.  | Level      | Error / Problem Found              | Correction Made                    | Reason                             |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+|                                             ----- SIMPLE LEVEL (2 marks each) -----                                              |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 1    | Simple     | Missing colon in the text-align    | Changed to "text-align: center;"   | A CSS property name and value must |
+|      |            | CSS property (text-align center;). |                                    | be separated by a colon.           |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 2    | Simple     | Missing "#" symbol for the ID      | Changed to "#orderBox { ... }"     | An ID selector in CSS must start   |
+|      |            | selector in CSS (orderBox { ...    |                                    | with #.                            |
+|      |            | }).                                |                                    |                                    |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 3    | Simple     | Missing unit in the padding value  | Changed to "padding: 20px;"        | CSS sizing values need a unit such |
+|      |            | (padding: 20;).                    |                                    | as px to be applied correctly.     |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 4    | Simple     | Incorrect function name called in  | Changed to                         | The button must call the exact     |
+|      |            | the button onclick event           | onclick="calculateBill()"          | name of the defined JavaScript     |
+|      |            | (onclick="calculate()").           |                                    | function.                          |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 5    | Simple     | Incorrect capitalization in the    | Changed to document.getElementById | JavaScript is case-sensitive; the  |
+|      |            | DOM method name                    |                                    | correct DOM method is              |
+|      |            | (document.getElementByID).         |                                    | getElementById.                    |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+|                                             ----- MEDIUM LEVEL (3 marks each) -----                                              |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 6    | Medium     | ID mismatch for the product select | Changed to                         | The HTML element ID is "product",  |
+|      |            | (document.getElementById("products | document.getElementById("product") | so JavaScript must reference the   |
+|      |            | ")).                               |                                    | matching ID.                       |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 7    | Medium     | Quantity input used type="text"    | Changed to <input type="number"    | The HTML5 "number" type with       |
+|      |            | instead of an HTML5 number         | id="quantity" min="1">             | min="1" enforces numeric input and |
+|      |            | control.                           |                                    | prevents zero/negative values.     |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 8    | Medium     | Mobile price logic assigned the    | Changed to price = 20000;          | The product option lists Mobile at |
+|      |            | wrong value (price = 2000;).       |                                    | Rs. 20000, so the condition must   |
+|      |            |                                    |                                    | assign the matching price.         |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 9    | Medium     | Incorrect DOM ID targeted for bill | Changed to                         | The intended output container has  |
+|      |            | output                             | document.getElementById("billBox") | the ID "billBox", so the correct   |
+|      |            | (document.getElementById("bill")). |                                    | ID must be used.                   |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 10   | Medium     | Incomplete validation for required | Replaced with individual checks    | The order must not proceed if any  |
+|      |            | information (checked only customer | and early returns for customer,    | one of Customer Name, Product, or  |
+|      |            | and quantity together with &&).    | product, and quantity.             | Quantity is missing.               |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+|                                            ----- DIFFICULT LEVEL (5 marks each) -----                                            |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 11   | Difficult  | Incorrect total calculation        | Changed to var total = price *     | Total amount must be Price x       |
+|      |            | formula (var total = price +       | Number(quantity);                  | Quantity, and Number() ensures     |
+|      |            | quantity;).                        |                                    | quantity is treated numerically.   |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 12   | Difficult  | Missing rigorous quantity          | Added a check for empty, non-      | Empty, zero, negative, and invalid |
+|      |            | validation logic.                  | numeric, zero, and negative        | quantities must be explicitly      |
+|      |            |                                    | quantity, with alert() and a stop  | rejected before bill generation.   |
+|      |            |                                    | on failure.                        |                                    |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 13   | Difficult  | Missing customer-type validation   | Added validation accepting only    | Only the two specified values may  |
+|      |            | logic for the prompt() input.      | "Regular" or "Premium" (case-      | be accepted; Cancel or empty input |
+|      |            |                                    | insensitive) and handling          | must stop bill generation with a   |
+|      |            |                                    | Cancel/empty input.                | message.                           |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 14   | Difficult  | Incorrect confirmation message and | Changed the message to "Do you     | The confirmation must ask about    |
+|      |            | flow (confirm("Do you want to      | want to place this order?" and     | placing the order, generating the  |
+|      |            | cancel this order?")).             | moved bill generation/success      | bill only on OK and cancelling on  |
+|      |            |                                    | alert inside the OK branch.        | Cancel.                            |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+| 15   | Difficult  | Incorrect overall execution flow   | Restructured the function to       | The workflow must proceed strictly |
+|      |            | in calculateBill().                | follow the exact required sequence | through Read Input -> Validate     |
+|      |            |                                    | of steps.                          | Customer -> Validate Product ->    |
+|      |            |                                    |                                    | Validate Quantity -> Determine     |
+|      |            |                                    |                                    | Price -> Calculate Total -> Ask    |
+|      |            |                                    |                                    | Customer Type -> Ask Confirmation  |
+|      |            |                                    |                                    | -> Generate Bill -> Display        |
+|      |            |                                    |                                    | Success Alert.                     |
++------+------------+------------------------------------+------------------------------------+------------------------------------+
+
+Total: 15 corrections applied across Simple, Medium, and Difficult levels (50 marks).
+
+====================================================================================================================================
